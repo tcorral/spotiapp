@@ -29,3 +29,25 @@ ng new spotiapp
     * Client Secret
 
     These two hashes will be needed to interact with the Spotify REST API.
+4. Execute the application:
+
+    * Change directory to the root of the app
+    ```bash
+    cd spotiapp
+    ```
+    * Open up the server:
+    There are two different commands you can use to run the server to serve your application.
+
+        1. Using **angular-cli**
+            ```bash
+            ng serve
+            ```
+        2. Using **npm**
+            ```bash
+            npm start
+            ```
+
+        Both commands will run your application.
+        Once the compilation is finished and the server is running you can open the server url in your browser. http://localhost:4200
+
+

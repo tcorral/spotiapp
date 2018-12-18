@@ -7,9 +7,4 @@ import { HttpClient } from '@angular/common/http';
 export class SpotifyService {
 
   constructor(private http: HttpClient) {}
-
-  getCountriesSpeakingDutch() {
-    return this.http
-    .get(`https://restcountries.eu/rest/v2/lang/nl`)
-  }
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { switchMap } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -8,12 +10,23 @@ export class SpotifyService {
 
   constructor(private http: HttpClient) {}
 
-  getNewReleases() {
-    const url = `https://api.spotify.com/v1/browse/new-releases`;
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer BQCniNZVbXT6Uhtoqp0m1SkXoBheWiWAAgpx1m-ie1broddp4suraa-zUYHjVNs-jIop9QMELU1UsMLUFieTBsfUhnp0SxJFelfPCxzoR8LRb02q8nEFuLS3dEzPxc0Lx9KGRNRuC0PZbZbGkpwceLrVIdNI2qoejUmJHO4L7MrkSiY2BtW2LCgnYQdJa6g3wUgw-mcngpzzW_kz_yRITHdA7arDLYpYlCj1Y8nxdt7XOhutVmjZhQic55wlESHCEHBSAIM78KOP`
-    });
+  getQuery (query) {
+    return this.http.get('http://localhost:3000/spotify/f7d4864e23544f919f3da422e2a88478/388ea25842324f1ca4e1e2ef81387e46')
+    .pipe(
+      switchMap((data: any) => {
+          const token = data.access_token;
+          const url = `https://api.spotify.com/v1/${query}`;
+          const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+          });
+  
+          return this.http.get(url, { headers });
+      })
+    );
+  }
 
-    return this.http.get(url, { headers });
+  getNewReleases() {
+    return this
+        .getQuery(`browse/new-releases`);
   }
 }

@@ -191,7 +191,19 @@ ng new spotiapp
             { path: '**', pathMatch: 'full', redirectTo: 'home'}
         ];
         ```
+10. Creating the basic layout:
 
+    * Open ```spoti-app/spotiapp/src/app/app.component.html``` and remove all its content.
+    #### Adding navigation:
+    * Insert the following code:
+        ```html
+        <app-navbar></app-navbar>
+        
+        <div class="container">
+            <router-outlet></router-outlet>
+        </div>
+        ```
+    * Open ```http://localhost:4200``` in your browser and check how routing is working.
 
 
 

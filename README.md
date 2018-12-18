@@ -344,3 +344,27 @@ ng new spotiapp
     ```spoti-app/spotiapp/src/app/components/home/home.component.ts``` and...
         * Remove the code inside **ngOnInit** 
         * Remove **countries** property
+
+15. Setting up our service to get the Spotify JWT Token on each request:
+
+    Our application will use Spotify JWT Token and as we have created our app in Spotify Developers page now it's time to set it up.
+
+    * Clone the repo:
+        ```bash
+        git clone https://github.com/tcorral/spotify-get-token.git
+        ```
+    * Run server:
+
+        ```bash
+        npm start
+        ```
+        The server will listen in port 3000 and the url to get the token is:
+            * ```http://localhost:3000/spotify/:client_id/:client_secret``` 
+            * It will require you to provide your client id and the client secret.
+        
+        #### Example:
+        http://localhost:3000/spotify/f7d4864e23544f919f3d5552e2a88478/6666625842324f1ca4e1e2ef81387e46
+    
+
+        
+

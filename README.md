@@ -205,6 +205,35 @@ ng new spotiapp
         ```
     * Open ```http://localhost:4200``` in your browser and check how routing is working.
 
+11. Making changes in navigation bar:
+
+    * Open ```spoti-app/spotiapp/src/app/components/shared/navbar/navbar.component.html``` and remove all its content.
+    * Open [Navbar Bootstrap](https://getbootstrap.com/docs/4.1/components/navbar/#supported-content)
+    * Copy the content of the first code snippet in ```spoti-app/spotiapp/src/app/components/shared/navbar/navbar.component.html```
+    * See how it is shown in the app.
+    #### Tweaking and cleaning up navbar.
+    * We need to do some cleaning up in this markup, so replace it by the following code:
+        ```html
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">
+                <img src="assets/img/banner-ico.png" width="30" height="30" alt=""> Spotiapp
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item" routerLinkActive="active">
+                        <a class="nav-link" routerLink="home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="search">Search</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        ```
 
 
 

@@ -60,4 +60,74 @@ ng new spotiapp
     - Artist
      ![Artist](./mockups/ARTIST.png "Artist Mock-up")
 
+6. Create page components:
+
+    * Open terminal.
+    * Change directory to the root of the app
+    ```bash
+    cd spotiapp
+    ```
+    #### HOME PAGE COMPONENT 
+    * Create HOME component
+        * Component only
+        ```bash
+        ng g c components/home --spec=false -is
+        ```
+        * Component + Tests only
+        ```bash
+        ng g c components/home -is
+        ```
+        * Component + Tests + Styles
+        ```bash
+        ng g c components/home
+        ```
+    * Check ```spoti-app/spotiapp/src/app/app.module.ts``` has been updated adding home component.
+    #### SEARCH PAGE COMPONENT
+    * Create SEARCH component
+        * Component only
+        ```bash
+        ng g c components/search --spec=false -is
+        ```
+        * Component + Tests only
+        ```bash
+        ng g c components/search -is
+        ```
+        * Component + Tests + Styles
+        ```bash
+        ng g c components/search
+        ```
+    * Check ```spoti-app/spotiapp/src/app/app.module.ts``` has been updated adding search component.
+    #### ARTIST PAGE COMPONENT
+    * Create ARTIST component
+        * Component only
+        ```bash
+        ng g c components/artist --spec=false -is
+        ```
+        * Component + Tests only
+        ```bash
+        ng g c components/artist -is
+        ```
+        * Component + Tests + Styles
+        ```bash
+        ng g c components/artist
+        ```
+    * Check ```spoti-app/spotiapp/src/app/app.module.ts``` has been updated adding artist component.
+    #### COMMON NAVIGATION COMPONENT
+    * Create Navigation component
+        * Component only
+        ```bash
+        ng g c components/shared/navbar --spec=false -is
+        ```
+        * Component + Tests only
+        ```bash
+        ng g c components/shared/navbar -is
+        ```
+        * Component + Tests + Styles
+        ```bash
+        ng g c components/shared/navbar
+        ```
+    * Check ```spoti-app/spotiapp/src/app/app.module.ts``` has been updated adding navigation component.
+
+
+
 

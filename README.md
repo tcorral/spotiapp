@@ -246,5 +246,94 @@ ng new spotiapp
             <router-outlet></router-outlet>
         </div>
         ```
+13. Start working with services:
 
+    #### Creating Spotify service:
+    * Create our first service:
+        ```bash
+        ng g s services/spotify --spec=false
+        ```
+    * For this exercise we are going to use a public api to fetch what countries speak Dutch. 
+        * [REST Countries](https://restcountries.eu/)
+        * https://restcountries.eu/rest/v2/lang/nl
+    * In order to make it work we need to add some code to our service.
+        ```typescript
+        import { Injectable } from '@angular/core';
+        import { HttpClient } from '@angular/common/http'; // < added
+
+        @Injectable({
+        providedIn: 'root'
+        })
+        export class SpotifyService {
+
+            constructor(private http: HttpClient) {} // < added
+
+            getCountriesSpeakingDutch() { // < added
+                return this.http
+                .get(`https://restcountries.eu/rest/v2/lang/nl`)
+            }
+        }
+        ```
+    #### Adding HttpClientModule and service to app module:
+    * Open ```spoti-app/spotiapp/src/app/app.module.ts``` and after the last import add the following:
+        ```typescript
+        import { HttpClientModule } from '@angular/common/http';
+        ```
+    * Add module to NgModule imports sections
+        ```typescript
+        @NgModule({
+            declarations: [
+                AppComponent,
+                HomeComponent,
+                ArtistComponent,
+                NavbarComponent,
+                SearchComponent
+            ],
+            imports: [
+                BrowserModule,
+                AppRoutingModule,
+                HttpClientModule // < Add module here
+            ],
+            providers: [ ]
+            bootstrap: [AppComponent]
+            })
+        ```
+    #### Use service from Home Component:
+    * Open ```spoti-app/spotiapp/src/app/components/home/home.component.ts```
+    * Add some code to get data from REST API.
+        * Component file:
+            ```typescript
+            import { Component, OnInit } from '@angular/core';
+            import { SpotifyService } from '../../services/spotify.service'; // < added
+
+            @Component({
+            selector: 'app-home',
+            templateUrl: './home.component.html',
+            styles: []
+            })
+            export class HomeComponent implements OnInit {
+
+            countries: any[] = [];  // < added
+
+            constructor(private spotifyService: SpotifyService) { } // < added
+
+            ngOnInit() {
+                this.spotifyService             // < added
+                .getCountriesSpeakingDutch()
+                .subscribe((response: any[]) => {
+                    this.countries = response;
+                });
+            }
+
+            }
+            ```
+        * HTML file:
+            ```typescript 
+            <ul>
+                <li *ngFor="let country of countries">
+                    {{ country.name }}
+                </li>
+            </ul>
+            ```
+    
 

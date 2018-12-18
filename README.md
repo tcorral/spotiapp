@@ -234,6 +234,17 @@ ng new spotiapp
             </div>
         </nav>
         ```
+12. Adding space between page content and navigation bar.
+    
+    As you can see the page content is touching the navigation bar and this doesn't let the design to breath. To solve this we have to add some space between both.
 
+    * Open ```spoti-app/spotiapp/src/app/app.component.html``` and add a class to add some margin as you can see in the next piece of code.
+        ```html
+        <app-navbar></app-navbar>
+
+        <div class="container m-5">
+            <router-outlet></router-outlet>
+        </div>
+        ```
 
 

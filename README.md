@@ -365,6 +365,66 @@ ng new spotiapp
         #### Example:
         http://localhost:3000/spotify/f7d4864e23544f919f3d5552e2a88478/6666625842324f1ca4e1e2ef81387e46
     
+16. Create service method to fetch latest releases from Spotify:
+
+    The first service method we are going to create will be used in home page where we are going to show the latest releases.
+
+    #### How to perform the request:
+    * Open ```https://developer.spotify.com/console/get-new-releases/``` in your browser and click on **Try it** button
+    * Copy the value of **OAuth Token** because will need it in a minute or two.
+    * In the right sidebar you can see how this request has been performed and what is needed to make it work.
+        ```bash
+            curl -X "GET" "https://api.spotify.com/v1/browse/new-releases" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer ABCDMYE7EJ91iCpMGiCFDNchrSdWE-zYOMX2FMc-siji7_0oM6x7Tqpk8gOEhbEr21lSpFD6h43OFYiWF15EABEJLWbbn71X9iOQ21So1c061O13Yi-XIr83_c-PFsn_WOiULqlSGnL086g_aaF6aMzYSqbt5fQAi105kl9TUhvXRVwi-PGyYJ7neWF9aNOycZPdreq5Fa4lWw55Lpp2BbZQ8Bkijv7HQ8g3jQ4wctwSg6_QraJHIeRaoNPBcIO8KBVc3oeVpL6R"
+        ```
+        Let's break it down:
+
+        * url = ```https://api.spotify.com/v1/browse/new-releases```
+        * headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer xxxxxxJWTxTokenxxxxxxxxxx'
+        }
+    #### Implementing service method:
+    * Open ```spoti-app/spotiapp/src/app/services/spotify.service.ts``` and add method **getNewReleases** as follows:
+        ```typescript
+        getNewReleases() {
+            const url = `https://api.spotify.com/v1/browse/new-releases`;
+            const headers = new HttpHeaders({
+            'Authorization': `Bearer <<TOKEN>>`
+            });
+
+            return this.http.get(url, { headers });
+        }
+        ```
+        Replace ```<<TOKEN>>``` by the Oauth Token you had to get copied from ```https://developer.spotify.com/console/get-new-releases/```
+    * Open ```spoti-app/spotiapp/src/app/components/home/home.component.ts``` and replace the content with:
+        ```typescript
+        import { Component, OnInit } from '@angular/core';
+        import { SpotifyService } from '../../services/spotify.service';
+
+        @Component({
+            selector: 'app-home',
+            templateUrl: './home.component.html',
+            styles: []
+        })
+        export class HomeComponent implements OnInit {
+
+            newReleases: any[] = [];    // < added
+
+            constructor(private spotifyService: SpotifyService) { }
+
+            ngOnInit() {
+                this.spotifyService         // < added
+                .getNewReleases()
+                .subscribe((newReleases: any[]) => {
+                    console.log('new releases:', newReleases);
+                    this.newReleases = newReleases;
+                })
+            }
+
+        }
+        ```
+
 
         
 

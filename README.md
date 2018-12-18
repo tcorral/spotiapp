@@ -50,4 +50,14 @@ ng new spotiapp
         Both commands will run your application.
         Once the compilation is finished and the server is running you can open the server url in your browser. http://localhost:4200
 
+5. Mock-ups of our app.
+    - Home
+    ![Home](./mockups/HOME.png "Home Mock-up")
+
+    - Search
+     ![Search](./mockups/SEARCH.png "Search Mock-up")
+
+    - Artist
+     ![Artist](./mockups/ARTIST.png "Artist Mock-up")
+
 

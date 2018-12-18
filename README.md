@@ -425,6 +425,45 @@ ng new spotiapp
         }
         ```
 
+17. Hub authentication in a single method.
+
+    As any JWT Token, the one from Spotify will expire and it will be needed to renew it, that's why we cloned and run the project **spotify-get-token**
+
+    The problem because of the expire is that from time to time we can have problems on getting data because this token that is what server uses to authenticate us.
+
+    In this exercise we are going to create a hub method in our service that:
+
+    1. It will get a token from Spotify
+    2. It will set the headers to get authenticated.
+    3. It will abstract the common part of the url.
+
+    * Open ```spoti-app/spotiapp/src/app/services/spotify.service.ts``` and add the next piece of code below the constructor.
+        ```typescript
+        getQuery (query) {
+            return this.http.get('http://localhost:3000/spotify/<<CLIENTID>>/<<CLIENT_SECRET>>')  // < Replace <<CLIENTID>> and <<CLIENT_SECRET>> with your actual client id and client secret.
+            .pipe(
+                switchMap((data: any) => {
+                    const token = data.access_token;
+                    const url = `https://api.spotify.com/v1/${query}`;
+                    const headers = new HttpHeaders({
+                        'Authorization': `Bearer ${token}`
+                    });
+            
+                    return this.http.get(url, { headers });
+                })
+            );
+        }
+        ```
+    * Change **getNewReleases** method to:
+        ```typescript
+        getNewReleases() {
+            return this
+                .getQuery(`browse/new-releases`);
+        }
+        ```
+    * With this change everything should still be working but now our token will get renewed on each request.
+
+
 
         
 

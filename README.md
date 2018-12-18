@@ -148,7 +148,49 @@ ng new spotiapp
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         ```
 
+9. Creating app routes:
 
+    * Open file ```spoti-app/spotiapp/src/app/app-routing.module.ts```
+    * Add configuration to use hash in the url
+        ```typescript
+        @NgModule({
+            imports: [RouterModule.forRoot(routes, { useHash: true })],
+            exports: [RouterModule]
+        })
+        ```
+    #### Home Page Route:
+    * After the existing imports add the following code.
+        ```typescript
+        import { HomeComponent } from './components/home/home.component';
+        ```
+    * Add the route path in the array **routes**
+        ```typescript
+        const routes: Routes = [
+            { path: 'home', component: HomeComponent}
+        ];
+        ```
+    #### Search Page Route:
+    * After the existing imports add the following code.
+        ```typescript
+        import { SearchComponent } from './components/search/search.component';
+        ```
+    * Add the route path in the array **routes**
+        ```typescript
+        const routes: Routes = [
+            { path: 'home', component: HomeComponent},
+            { path: 'search', component: SearchComponent}
+        ];
+        ```
+    #### Wildcards Routes:
+    * Add the route path in the array **routes**
+        ```typescript
+        const routes: Routes = [
+            { path: 'home', component: HomeComponent},
+            { path: 'search', component: SearchComponent},
+            { path: '', pathMatch: 'full', redirectTo: 'home'},
+            { path: '**', pathMatch: 'full', redirectTo: 'home'}
+        ];
+        ```
 
 
 

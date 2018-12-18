@@ -128,6 +128,13 @@ ng new spotiapp
         ```
     * Check ```spoti-app/spotiapp/src/app/app.module.ts``` has been updated adding navigation component.
 
+7. Allocate the resources were they will be used.
+
+    * Copy ```spoti-app/resources/img``` to ```spoti-app/spotiapp/src/assets```
+    * Replace ```spoti-app/spotiapp/src/styles.css``` with ```spoti-app/resources/styles.css```
+
+
+
 
 
 

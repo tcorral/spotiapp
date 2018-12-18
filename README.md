@@ -336,4 +336,11 @@ ng new spotiapp
             </ul>
             ```
     
+14. Removing demo service method and usage.
 
+    * Open ```spoti-app/spotiapp/src/app/services/spotify.service.ts``` and remove **getCountriesSpeakingDutch** method.
+    * Open ```spoti-app/spotiapp/src/app/components/home/home.component.html``` and remove the **ul** and children.
+    * Open
+    ```spoti-app/spotiapp/src/app/components/home/home.component.ts``` and...
+        * Remove the code inside **ngOnInit** 
+        * Remove **countries** property

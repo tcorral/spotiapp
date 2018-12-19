@@ -42,4 +42,17 @@ export class SpotifyService {
           map((response: any) => response.artists.items)
       );
   }
+  
+  getArtist(id) {
+      return this
+      .getQuery(`artists/${id}`);
+  }
+
+  getTopTracks(id) {
+      return this
+          .getQuery(`artists/${id}/top-tracks?country=NL`)
+          .pipe(
+              map((response: any) => response.tracks)
+          );
+  }
 }

@@ -795,3 +795,29 @@ ng new spotiapp
             }
         }
         ```
+24. Add route for artist page.
+
+    * Open ```spoti-app/spotiapp/src/app/app-routing.module.ts``` and replace its content by the code underneath.
+        ```typescript
+        import { NgModule } from '@angular/core';
+        import { Routes, RouterModule } from '@angular/router';
+        import { HomeComponent } from './components/home/home.component';
+        import { SearchComponent } from './components/search/search.component';
+        import { ArtistComponent } from './components/artist/artist.component'; // < added
+
+        const routes: Routes = [
+            { path: 'home', component: HomeComponent},
+            { path: 'search', component: SearchComponent},
+            { path: 'artist/:id', component: ArtistComponent},  // < added
+            { path: '', pathMatch: 'full', redirectTo: 'home'},
+            { path: '**', pathMatch: 'full', redirectTo: 'home'}
+        ];
+
+        @NgModule({
+            imports: [RouterModule.forRoot(routes, { useHash: true })],
+            exports: [RouterModule]
+        })
+        export class AppRoutingModule { }
+        ```
+    * In order to test it works, you can open the url ```http://localhost:4200/#/artist/123``` you will see how it shows the message **artist works!**
+    

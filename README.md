@@ -820,4 +820,46 @@ ng new spotiapp
         export class AppRoutingModule { }
         ```
     * In order to test it works, you can open the url ```http://localhost:4200/#/artist/123``` you will see how it shows the message **artist works!**
+25. Perform changes in Cards Component to add links to artist so we can navigate to artist details page.
+
+    In this exercise we are going to add a link to each artist to navigate to artist details page.
+    Keep in mind that in Home Component there might be one or more artists per album or single but in Search Component each card is already an artist.
+
+    The task we have to perform is to add a link to each author badge in Home Component while we are adding a link to the whole card in Search Component.
+
+    Due to the behaviour of **a** tag you cannot nest a link within another link this is why we cannot reuse the same markup for both use cases but we need to still use cards to abstract this behaviour.
     
+    #### Changing markup.
+    * Open ```spoti-app/spotiapp/src/app/components/shared/cards/cards.component.html``` and replace its content by the code underneath.
+        ```html
+        <div class="card-columns m-5">
+            <ng-container *ngFor="let item of items">
+                <ng-container *ngIf="item.artists else single">
+                    <div class="card">
+                        <img class="card-img-top" [src]="item.images | noimage" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title card-title-ellipsis">{{ item.name }}</h5>
+                            <p class="card-text" *ngIf="item.artists">
+                                <span (click)="showArtist(artist)" *ngFor="let artist of item.artists" class="badge badge-primary puntero">{{artist.name}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-template #single>
+                    <div (click)="showArtist(item)" class="card puntero">
+                        <img class="card-img-top" [src]="item.images | noimage" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title card-title-ellipsis">{{ item.name }}</h5>
+                        </div>
+                    </div>
+                </ng-template>
+            </ng-container>
+        </div>
+        ```
+    #### Adding method to component to redirect to details artist page on clicking over an artist.
+    * Open ```spoti-app/spotiapp/src/app/components/shared/cards/cards.component.ts``` and after **ngOnInit** method add the next piece of code.
+        ```typescript
+        showArtist(item) {
+            this.router.navigate(['/artist', item.id]);
+        }
+        ```

@@ -697,3 +697,101 @@ ng new spotiapp
         ```
 
     Now you can see how we have removed duplicated the code and we have created an UI component that can be used anywhere it's needed.
+23. Create a Loading Component
+
+    Sometimes depending of the connectivity the results can take longer to get returned from server and in the meantime the user doesn't know if something is wrong or not. To let the user know that the request is still going on we need to create a Loading Component that will show a spinner in our page.
+
+    #### Creating component
+    * Change directory to spotiapp
+        ```bash
+        cd spotiapp
+        ```
+    * Create Loading Component
+        ```bash
+        ng g c components/shared/loading --spec=false -is
+        ```` 
+    * Open ```https://fontawesome.com/icons?d=gallery&q=sync``` to see what font are we going to use.
+    #### Adding Font awesome css
+    * Open ```spoti-app/spotiapp/src/index.html``` and add ```<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">``` right before the head closing tag.
+    #### Setting the markup
+    * Open ```spoti-app/spotiapp/src/app/components/shared/loading/loading.component.html``` and replace its content by the next piece of code.
+        ```html
+        <div class="row text-center animated fadeIn m-5">
+            <div class="col">
+                <i class="fas fa-spin fa-sync fa-5x"></i>
+            </div>
+        </div>
+        ```
+    #### Making use of Loading Component in Home Component.
+    * Open ```spoti-app/spotiapp/src/app/components/home/home.component.html``` and add ```<app-loading *ngIf="loading"></app-loading>``` before the existing code.
+    * Open ```spoti-app/spotiapp/src/app/components/home/home.component.ts``` and replace its content by the next code snippet.
+        ```typescript
+        import { Component, OnInit } from '@angular/core';
+        import { SpotifyService } from '../../services/spotify.service';
+
+        @Component({
+            selector: 'app-home',
+            templateUrl: './home.component.html',
+            styles: []
+        })
+        export class HomeComponent implements OnInit {
+            newReleases: any[] = [];
+            loading: boolean = false;
+
+            constructor(private spotifyService: SpotifyService) { }
+
+            ngOnInit() {
+                this.loading = true;
+                this.spotifyService
+                    .getNewReleases()
+                    .subscribe((newReleases: any[]) => {
+                        this.newReleases = newReleases;
+                        this.loading = false;
+                    });
+            }
+        }
+        ```
+    #### Making use of Loading Component in Search Component.
+    * Open ```spoti-app/spotiapp/src/app/components/search/search.component.html``` and replace its content by the next piece of code.
+        ```html
+        <div class="row">
+            <div class="col">
+                <input #term type="text" (keyup)="search(term.value)" class="form-control" placeholder="Search Artist">
+            </div>
+        </div>
+        <div class="row m-3">
+            <div class="col">
+                <app-loading *ngIf="loading"></app-loading>
+                <app-cards *ngIf="!loading" [items]="artists"></app-cards>
+            </div>
+        </div>
+        ```
+    * Open ```spoti-app/spotiapp/src/app/components/search/search.component.ts``` and replace its content by the following code.
+        ```typescript
+        import { Component, OnInit } from '@angular/core';
+        import { SpotifyService } from 'src/app/services/spotify.service';
+
+        @Component({
+            selector: 'app-search',
+            templateUrl: './search.component.html',
+            styles: []
+        })
+        export class SearchComponent implements OnInit {
+            loading: boolean = false;
+            artists: any[] = [];
+
+            constructor(private spotifyService: SpotifyService) { }
+
+            ngOnInit() {}
+
+            search(term) {
+                this.loading = true;
+                this.spotifyService
+                    .getArtists(term)
+                    .subscribe(artists => {
+                        this.artists = artists;
+                        this.loading = false;
+                    });
+            }
+        }
+        ```

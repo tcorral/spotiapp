@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +27,11 @@ export class SpotifyService {
 
   getNewReleases() {
     return this
-        .getQuery(`browse/new-releases`);
-  }
+        .getQuery(`browse/new-releases?limit=20`)
+        .pipe(  // < added
+            map((response: any) => {
+                return response.albums.items
+            })
+        );
+}
 }

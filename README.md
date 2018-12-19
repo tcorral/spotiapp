@@ -516,7 +516,76 @@ ng new spotiapp
             </div>
         </div>
         ```
+20. Implementing Search Component.
 
+    In this exercise we will use an input box to set a value and this value will be used to fetch from server the artists that have this value in name.
+
+    ### Setting markup
+    * Open ```spoti-app/spotiapp/src/app/components/search/search.component.html``` and remove all its content and replace it by the following code.
+        ```html
+        <div class="row">
+            <div class="col">
+                <input #term type="text" (keyup)="search(term.value)" class="form-control" placeholder="Search Artist">
+            </div>
+        </div>
+        <div class="row m-3">
+            <div class="col">
+                <div class="card-columns">
+                    <div *ngFor="let artist of artists" class="card">
+                        <img class="card-img-top" [src]="artist.images[0].url" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ artist.name }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        ```
+    #### Creating service method to fetch artists by name.
+    * Open ```https://developer.spotify.com/console/get-search-item/``` in your browser.
+        * Set the value of **type** input box to ```artist```
+        * Set the value of **q** input box to any artist name you want to search for
+        * See the results on the right sidebar.
+    * Open ```spoti-app/spotiapp/src/app/services/spotify.service.ts``` and add the following code.
+        ```typescript
+        getArtists(query) {
+            return this
+            .getQuery(`search?query=${query}&type=artist`)
+            .pipe(
+                map((response: any) => response.artists.items)
+            );
+        }
+        ```
+    #### Implement the search method in Search Component.
+    * Open ```spoti-app/spotiapp/src/app/components/search/search.component.ts``` and after **ngOnInit** add replace the existing code by the following piece of code.
+        ```typescript
+        import { Component, OnInit } from '@angular/core';
+        import { SpotifyService } from 'src/app/services/spotify.service';
+
+        @Component({
+            selector: 'app-search',
+            templateUrl: './search.component.html',
+            styles: []
+        })
+        export class SearchComponent implements OnInit {
+
+            artists: any[] = [];
+
+            constructor(private spotifyService: SpotifyService) { }
+
+            ngOnInit() {}
+
+            search(term) {
+                this.spotifyService
+                    .getArtists(term)
+                    .subscribe(artists => {
+                        this.artists = artists;
+                    });
+            }
+        }
+        ``` 
+    
+    After implementing this you might see some 404 errors in the console as well as cards without image and name, this happens because there are items that doesn't contain any image by default. Our next step will be to implement a pipe to solve this problem.
 
         
 

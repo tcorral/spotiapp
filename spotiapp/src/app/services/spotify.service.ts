@@ -33,5 +33,13 @@ export class SpotifyService {
                 return response.albums.items
             })
         );
-}
+  }
+
+  getArtists(query) {
+    return this
+      .getQuery(`search?query=${query}&type=artist`)
+      .pipe(
+          map((response: any) => response.artists.items)
+      );
+  }
 }

@@ -1,11 +1,23 @@
-<div class="card-columns">
-    <div *ngFor="let item of items" class="card">
-        <img class="card-img-top" [src]="item.images | noimage" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">{{ item.name }}</h5>
-            <p class="card-text" *ngIf="item.artists">
-              <span *ngFor="let artist of item.artists" class="badge badge-pill badge-primary">{{ artist.name }}</span>
-            </p>
-        </div>
-    </div>
+<div class="card-columns m-5">
+    <ng-container *ngFor="let item of items">
+        <ng-container *ngIf="item.artists else single">
+            <div class="card">
+                <img class="card-img-top" [src]="item.images | noimage" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title card-title-ellipsis">{{ item.name }}</h5>
+                    <p class="card-text" *ngIf="item.artists">
+                        <span (click)="showArtist(artist)" *ngFor="let artist of item.artists" class="badge badge-primary puntero">{{artist.name}}</span>
+                    </p>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #single>
+            <div (click)="showArtist(item)" class="card puntero">
+                <img class="card-img-top" [src]="item.images | noimage" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title card-title-ellipsis">{{ item.name }}</h5>
+                </div>
+            </div>
+        </ng-template>
+    </ng-container>
 </div>

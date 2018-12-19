@@ -15,6 +15,10 @@ export class CardsComponent implements OnInit {
 
   ngOnInit() {
   }
+  
+  showArtist(item) {
+    this.router.navigate(['/artist', item.id]);
+  }
 
 }
 

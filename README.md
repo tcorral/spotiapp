@@ -995,4 +995,47 @@ ng new spotiapp
             </div>
         </div>
         ````
-    
+27. Add Preview Spotify Widget.
+
+    Spotify provides a widget to play a preview of a song. See https://developer.spotify.com/documentation/widgets/generate/play-button/
+
+    * Open ```spoti-app/spotiapp/src/app/components/artist/artist.component.html``` and replace ```<!-- Add preview widget here -->``` by the example provided in Spotify. Use the compact version
+        ```html
+        <iframe src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        ```
+
+    Now you will see a widget with a play button to play the music, but this is not what we need. We need to show a player for each track.
+
+    * Open your browser developer tools and replace the src value of the iframe and replace it by ```https://open.spotify.com/embed/?uri={{ track.uri }}```
+
+    #### What is happening now?
+    There is a security problem on setting the src of and iframe using variables and it's not allowed by browsers.
+    The solution to this problem is not sanitize our code to make sure that doesn't contains anything harmful.
+    To make it work we have to create another pipe to perform this job.
+
+    * Create a savedom pipe
+        ```bash
+        ng g p pipes/savedom --spec=false
+        ```
+    * Open ```spoti-app/spotiapp/src/app/pipes/savedom.pipe.ts``` and replace its content by the code underneath.
+        ```typescript
+        import { Pipe, PipeTransform } from '@angular/core';
+        import { DomSanitizer } from '@angular/platform-browser';
+
+        @Pipe({
+            name: 'savedom'
+        })
+        export class SaveDOMPipe implements PipeTransform {
+
+            constructor( private domSanitizer:DomSanitizer ){ }
+
+            transform( value: string, url: string): any {
+                return this.domSanitizer.bypassSecurityTrustResourceUrl( url + value );
+            }
+        }
+        ```
+
+        This pipe gets a value and it's configured by a property, the value is the uri of the track and the url is the prefix url. What it does is to use a tool existing in angular that bypass the security setting this value as something that can be trust.
+
+    #### Use the pipe to preview the play widget
+    * Open ```spoti-app/spotiapp/src/app/components/artist/artist.component.html``` and replace ```<iframe src="https://open.spotify.com/embed/?uri={{ track.uri }}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>``` by ```<iframe [src]="track.uri | savedom:'https://open.spotify.com/embed/?uri='" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>```

@@ -617,7 +617,83 @@ ng new spotiapp
     #### Using our pipe
     * Open ```spoti-app/spotiapp/src/app/components/search/search.component.html``` and replace ```artist.images[0].url``` by ```artist.images | noimage```
 
+22. Create a Cards Component
 
-        
+    As you could see in the implementation of Home Component and Search Component we have duplicated part of the code to show the cards for artist and  new releases. 
+    In this exercise we are going to remove the duplicated code by creating a new Cards Component that we can use wherever is needed.
+    This component will be used as an UI component, so it will only receive and render data.
 
+    * Change directory to spotiapp
+        ```bash
+        cd spotiapp
+        ```
+    * Creating Cards Component
+        ```bash
+        ng g c components/shared/cards --spec=false -is
+       ```
+    * Remove the content of file ```spoti-app/spotiapp/src/app/components/shared/cards/cards.component.html``` 
+    * Copy the content of ```spoti-app/spotiapp/src/app/components/home/home.component.html``` to ```spoti-app/spotiapp/src/app/components/shared/cards/cards.component.html``` 
 
+    The problem now is that there are a few differences between both card types, the ones used for Home Component and the ones used for Search Component. Our next job will be to create a common component that will handle both use cases.
+
+    #### Differences between Home Component and Search Component cards.
+    1. We have to simplify the name of the data we are receiving.
+    2. We have to implement the noimage pipe to be used in both
+    3. If data contains **artists** then we should show them as badges.
+
+    #### Simplify Cards Component
+    * Open ```spoti-app/spotiapp/src/app/components/shared/cards/cards.component.ts``` and replace its content by this piece of code.
+        ```typescript
+        import { Component, OnInit, Input } from '@angular/core';
+        import { Router } from '@angular/router';
+
+        @Component({
+            selector: 'app-cards',
+            templateUrl: './cards.component.html',
+            styleUrls: []
+        })
+        export class CardsComponent implements OnInit {
+
+            @Input()
+            items: any[] = [];
+
+            constructor(private router: Router) { }
+
+            ngOnInit() {}
+        }
+        ```
+    * Open ```spoti-app/spotiapp/src/app/components/shared/cards/cards.component.html``` and replace its content by the following code.
+        ```html
+        <div class="card-columns">
+            <div *ngFor="let item of items" class="card">
+                <img class="card-img-top" [src]="item.images | noimage" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text" *ngIf="item.artists">
+                        <span *ngFor="let artist of item.artists" class="badge badge-pill badge-primary">{{ artist.name }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        ```  
+    #### Replace the cards html code from Home Component
+    * Open ```spoti-app/spotiapp/src/app/components/home/home.component.html``` remove its content and replace it by this code snippet.
+        ```html
+        <app-cards [items]="newReleases"></app-cards>
+        ```
+    #### Replace the cards html code from Search Component
+    * Open ```spoti-app/spotiapp/src/app/components/search/search.component.html``` remove its content and replace it by this code snippet.
+        ```html
+        <div class="row">
+            <div class="col">
+                <input #term type="text" (keyup)="search(term.value)" class="form-control" placeholder="Search Artist">
+            </div>
+        </div>
+        <div class="row m-3">
+            <div class="col">
+                <app-cards [items]="artists"></app-cards>
+            </div>
+        </div>
+        ```
+
+    Now you can see how we have removed duplicated the code and we have created an UI component that can be used anywhere it's needed.

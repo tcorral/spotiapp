@@ -483,6 +483,39 @@ ng new spotiapp
         ```
     What we are doing on this method is using Observables, streams, to pipe this value and then map the response to only return *response.albums.items* Now if you open Home page you can see that the value in console has changed.
 
+19. Implementing new releases in Home Component.
+
+    In order to show the new releases in Home Component we will use a Bootstrap component called Cards and we are going to show them replicating Pinterest style with columns.
+
+    #### Setting basic markup
+    * Open ```https://getbootstrap.com/docs/4.1/components/card/#card-columns``` in your browser and copy only the first eight lines of the code snippet.
+        ```html
+        <div class="card-columns">
+            <div class="card">
+                <img class="card-img-top" src=".../100px160/" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Card title that wraps to a new line</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+        </div>
+        ```
+    * Open ```spoti-app/spotiapp/src/app/components/home/home.component.html``` and replace its content with the code we copied in previous step.
+    #### Creating a card per each album or single
+    * Modify the markup to use ***ngFor**
+        ```typescript
+        <div class="card-columns">
+            <div *ngFor="let release of newReleases" class="card">
+                <img class="card-img-top" [src]="release.images[0].url" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ release.name }}</h5>
+                    <p class="card-text">
+                        <span *ngFor="let artist of release.artists" class="badge badge-pill badge-primary">{{ artist.name }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        ```
 
 
         

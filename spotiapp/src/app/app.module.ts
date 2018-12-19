@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NoimagePipe } from './pipes/noimage.pipe';
 import { CardsComponent } from './components/shared/cards/cards.component';
 import { LoadingComponent } from './components/shared/loading/loading.component';
+import { SavedomPipe } from './pipes/savedom.pipe';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { LoadingComponent } from './components/shared/loading/loading.component'
     SearchComponent,
     NoimagePipe,
     CardsComponent,
-    LoadingComponent
+    LoadingComponent,
+    SavedomPipe
   ],
   imports: [
     BrowserModule,

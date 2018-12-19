@@ -587,5 +587,35 @@ ng new spotiapp
     
     After implementing this you might see some 404 errors in the console as well as cards without image and name, this happens because there are items that doesn't contain any image by default. Our next step will be to implement a pipe to solve this problem.
 
+21. Creating a pipe to manage images.
+
+    As you could see in the previous exercise, when there is no image, not only the image is not rendered but also the rest of the template is not rendered either.
+
+    On this exercise we are going to build a pipe that will receive the array of images and if there is an image it will use this url but if the image is not there we will show one by default.
+
+    We have added a new file in resources named **noimage.png** this is the default image we will use if there is no image in artist.
+
+    #### Setting default image.
+    * Copy the file you can find in ```spoti-app/resources/noimage.png``` to ```spoti-app/spotiapp/src/assets/img/noimage.png```
+    #### Creating our first pipe.
+    A pipe has a **transform** method that will receive the value from the left and some arguments, if needed, from the right using **:** separator.
+    * Create a new pipe
+        ```bash
+        ng g p pipes/noimage --spec=false
+        ```
+    * Open ```spoti-app/spotiapp/src/app/pipes/noimage.pipe.ts``` and replace the **transform** method by the following code snippet.
+        ```typescript
+        transform(images: any[]): string {
+            if (!images || images.length === 0) {
+                return 'assets/img/noimage.png';
+            }
+            if (images.length > 0) {
+                return images[0].url;
+            }
+        }
+        ```
+
+
         
+
 

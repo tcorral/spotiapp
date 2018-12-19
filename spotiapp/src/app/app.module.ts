@@ -10,6 +10,7 @@ import { SearchComponent } from './components/search/search.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NoimagePipe } from './pipes/noimage.pipe';
 import { CardsComponent } from './components/shared/cards/cards.component';
+import { LoadingComponent } from './components/shared/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CardsComponent } from './components/shared/cards/cards.component';
     NavbarComponent,
     SearchComponent,
     NoimagePipe,
-    CardsComponent
+    CardsComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

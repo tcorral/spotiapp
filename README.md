@@ -1039,3 +1039,10 @@ ng new spotiapp
 
     #### Use the pipe to preview the play widget
     * Open ```spoti-app/spotiapp/src/app/components/artist/artist.component.html``` and replace ```<iframe src="https://open.spotify.com/embed/?uri={{ track.uri }}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>``` by ```<iframe [src]="track.uri | savedom:'https://open.spotify.com/embed/?uri='" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>```
+
+28. BONUS EXERCISES.
+
+    1. Show a Bootstrap 4 alert at the top of the page, just below navigation topbar, if something goes wrong on fetching data from server.
+    2. In Search Component:
+        - Do not send the request to server if query has less than three characters.
+        - Add some delay before sending the request to server letting the user to type something with sense.

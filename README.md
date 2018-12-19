@@ -863,3 +863,136 @@ ng new spotiapp
             this.router.navigate(['/artist', item.id]);
         }
         ```
+26. Implementing Artist Component.
+
+    In this exercise we are going to implementing the Artist Component and it will contain a few sections on it.
+    - Section 1
+        - Artist picture
+        - Artist name
+        - Back button
+    - Section 2
+        - Table
+            - Columns
+                - Cover picture
+                - Album name
+                - Song name
+                - Preview (Spotify widget to play music)
+    
+    In the route you might have seen that we are passing an id parameter, we need to get this value to fetch the details of the artist and the artist top tracks.
+
+    #### Creating service methods to fetch artist details and artist top tracks.
+    * Open ```https://developer.spotify.com/console/get-artist/``` and check how it works. **Artist Details**
+    * Open ```https://developer.spotify.com/console/get-artist-top-tracks/``` and check how it works. **Artist Top Tracks**
+    * Open ```spoti-app/spotiapp/src/app/services/spotify.service.ts``` and after **getArtists** add the following code.
+        ```typescript
+        getArtist(id) {
+            return this
+            .getQuery(`artists/${id}`);
+        }
+
+        getTopTracks(id) {
+            return this
+                .getQuery(`artists/${id}/top-tracks?country=NL`)
+                .pipe(
+                    map((response: any) => response.tracks)
+                );
+        }
+        ```
+    #### Use services in component
+    * Open ```spoti-app/spotiapp/src/app/components/artist/artist.component.ts``` and replace its content by the following snippet of code.
+        ```typescript
+        import { Component, OnInit } from '@angular/core';
+        import { ActivatedRoute } from '@angular/router';
+        import { SpotifyService } from 'src/app/services/spotify.service';
+
+        @Component({
+            selector: 'app-artist',
+            templateUrl: './artist.component.html',
+            styles: []
+        })
+        export class ArtistComponent implements OnInit {
+
+            artist: any = {};
+            topTracks: any[] = [];
+            loading: boolean = false;
+
+            constructor(private activatedRoute: ActivatedRoute, private spotifyService: SpotifyService) {}
+
+            ngOnInit() {
+                this.loading = true;
+                this.activatedRoute
+                    .params
+                    .subscribe(params => {
+                        const id = params.id;
+                        this.getArtist(id);
+                        this.getTopTracks(id);
+                    });
+            }
+
+            getArtist(id) {
+                this.loading = true;
+                return this.spotifyService
+                    .getArtist(id)
+                    .subscribe(artist => {
+                        this.artist = artist;
+                        this.loading = false;
+                    });
+            }
+
+            getTopTracks(id) {
+                this.loading = true;
+                return this.spotifyService
+                    .getTopTracks(id)
+                    .subscribe(topTracks => {
+                        this.topTracks = topTracks;
+                        this.loading = false;
+                    });
+            }
+        }
+        ```
+    #### Setting markup
+    * Open ```spoti-app/spotiapp/src/app/components/artist/artist.component.html``` and replace its content with the code underneath.
+        ```html
+        <app-loading *ngIf="loading"></app-loading>
+        <div class="row" *ngIf="!loading">
+            <div class="col-2">
+                <img [src]="artist.images | noimage" alt="" class="img-thumbnail img-circle">
+            </div>
+            <div class="col">
+                <h3>{{ artist.name }}</h3>
+                <p>
+                <a [href]="artist.external_urls.spotify" target="_blank">Go to artist page</a>
+                </p>
+            </div>
+            <div class="col-4 text-right">
+                <button class="btn btn-outline-danger" routerLink="search">Back</button>
+            </div>
+        </div>
+        <div class="row m-5">
+            <div class="col">
+                <table class="table">
+                <thead>
+                    <tr>
+                    <th>Cover</th>
+                    <th>Album</th>
+                    <th>Song</th>
+                    <th>Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let track of topTracks">
+                    <td>
+                        <img [src]="track.album.images | noimage" class="img-thumb">
+                    </td>
+                    <td>{{ track.album.name }}</td>
+                    <td>{{ track.name }}</td>
+                    <td class="text-center">
+                        <!-- Add preview widget here -->
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+        ````
+    

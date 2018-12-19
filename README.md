@@ -463,6 +463,26 @@ ng new spotiapp
         ```
     * With this change everything should still be working but now our token will get renewed on each request.
 
+18. Simplify data provided by service:
+
+    As you could see, we are receiving an object that contains a property called **albums** and this contains a lot of information that we might be not use.
+
+    This exercise will simplify the response for new releases so that we only get what we will make use in Home component.
+
+    * Open ```spoti-app/spotiapp/src/app/services/spotify.service.ts``` and refactor **getNewReleases** as follows:
+        ```typescript
+        getNewReleases() {
+            return this
+                .getQuery(`browse/new-releases?limit=20`)
+                .pipe(  // < added
+                    map((response: any) => {
+                        return response.albums.items
+                    })
+                );
+        }
+        ```
+    What we are doing on this method is using Observables, streams, to pipe this value and then map the response to only return *response.albums.items* Now if you open Home page you can see that the value in console has changed.
+
 
 
         

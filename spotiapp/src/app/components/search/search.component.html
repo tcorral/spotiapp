@@ -5,13 +5,6 @@
 </div>
 <div class="row m-3">
     <div class="col">
-        <div class="card-columns">
-            <div *ngFor="let artist of artists" class="card">
-                <img class="card-img-top" [src]="artist.images | noimage" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">{{ artist.name }}</h5>
-                </div>
-            </div>
-        </div>
+        <app-cards [items]="artists"></app-cards>
     </div>
 </div>

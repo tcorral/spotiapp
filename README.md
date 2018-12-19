@@ -614,6 +614,8 @@ ng new spotiapp
             }
         }
         ```
+    #### Using our pipe
+    * Open ```spoti-app/spotiapp/src/app/components/search/search.component.html``` and replace ```artist.images[0].url``` by ```artist.images | noimage```
 
 
         
